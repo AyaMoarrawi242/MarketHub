@@ -114,7 +114,7 @@ return (
          {/* Search bar Desktop */}
       <form
         onSubmit={handleSearch}
-        className="hidden md:flex  mx-10 items-center group my-2 "
+        className="hidden md:flex  mx-10 items-center group mb-1 mt-0 "
       >
         <Search
           size={20}
