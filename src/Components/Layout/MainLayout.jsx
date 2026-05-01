@@ -3,15 +3,16 @@ import { Outlet } from 'react-router-dom' ;
 import Header from './Header';
 import Footer from './Footer' ;
 import ButtonNavigation from './ButtonNavigation';
+
 const MainLayout = () => {
   return (
-    <div className='min-h-screen flex flex-col bg-white dark:bg-gray-900'>
+    <div className='min-h-screen flex flex-col bg-light-bg text-light-text dark:bg-dark-bg dark:text-dark-text transition-colors duration-300'>
         <Header />
-        <main className='flex-1 pt-[80px] lg:pt-[100px]'>
+        <main className='flex-1 pt-[160px] lg:pt-[200px] px-4 sm:px-8 pb-24'>
             <Outlet/>
-            </main>
-            <ButtonNavigation />
-            <Footer />
+        </main>
+        <ButtonNavigation />
+        <Footer />
     </div>
   )
 }

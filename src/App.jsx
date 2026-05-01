@@ -1,35 +1,50 @@
- import React from 'react' ;
- import { BrowserRouter as Router ,Routes ,Route } from 'react-router-dom';
- import Header from './Components/Layout/Header' ;
- import MainLayout from './Components/Layout/MainLayout';
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import MainLayout from "./Components/Layout/MainLayout";
+import ProtectedRoute from "./Components/Common/ProtectedRote";
 
- import HomePage from './Pages/HomePage' ;
- import CreateListingPage from './Pages/content/CreateListing' ;
- import FavoritesPage from './Pages/Profile/Favorites' ;
- import MessagePage from './Pages/Profile/Message' ;
- import SearchPage from './Pages/SearchPage';
- import MenuPage from './Pages/MenuPage' ;
-const App = () => { 
+import HomePage from "./Pages/HomePage";
+import CategoriesPage from "./Pages/CategoriesPage";
+import SearchPage from "./Pages/SearchPage";
+import MenuPage from "./Pages/MenuPage";
+import CreateListingPage from "./Pages/content/CreateListing";
+import DetailListingPage from "./Pages/content/DetailListing";
+import EditListingPage from "./Pages/content/EditListing";
+import FavoritesPage from "./Pages/Profile/Favorites";
+import BookMarkPage from "./Pages/Profile/BookMark";
+import ProfilePage from "./Pages/Profile/ProfilePage";
+import PublicProfilePage from "./Pages/Profile/PublicProfilePage";
+import MessagePage from "./Pages/Profile/Message";
+import NotFoundPage from "./Pages/NotFoundPage";
+import Login from "./Pages/auth/Login";
+import Register from "./Pages/auth/Register";
+
+const App = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={ <MainLayout />}>
-        {/* Home */}
-        <Route index element={<HomePage/>}/>
-        {/* Search */}
-        <Route path="search" element={<SearchPage/>}/>
-        {/* Favorites */}
-        <Route path="favorites" element={<FavoritesPage/>}/>
-        {/* Message */}
-        <Route path="message" element={<MessagePage/>}/>
-        {/* Add Listing  */}
-        <Route path="createListing" element={<CreateListingPage/>}/>
-        {/* Menu */}
-        <Route path="/menuPage"  element={<MenuPage/>}/>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/" element={<MainLayout />}>
+          <Route index element={<HomePage />} />
+          <Route path="categories" element={<CategoriesPage />} />
+          <Route path="search" element={<SearchPage />} />
+          <Route path="favorites" element={<ProtectedRoute><FavoritesPage /></ProtectedRoute>} />
+          <Route path="bookmarks" element={<ProtectedRoute><BookMarkPage /></ProtectedRoute>} />
+          <Route path="profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
+          <Route path="user/:id" element={<PublicProfilePage />} />
+          <Route path="message" element={<ProtectedRoute><MessagePage /></ProtectedRoute>} />
+          <Route path="createListing" element={<ProtectedRoute><CreateListingPage /></ProtectedRoute>} />
+          <Route path="listing/:id" element={<DetailListingPage />} />
+          <Route path="listing/:id/edit" element={<ProtectedRoute><EditListingPage /></ProtectedRoute>} />
+          <Route path="menuPage" element={<MenuPage />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Route>
+        <Route path="*" element={<NotFoundPage />} />
+     
       </Routes>
     </Router>
-  )
- }
+  );
+};
 
-export default App
+export default App;
