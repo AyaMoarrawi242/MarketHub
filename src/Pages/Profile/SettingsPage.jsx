@@ -216,7 +216,7 @@ const SettingsPage = () => {
             <p className="text-sm text-red-700/80 dark:text-red-400/80 mt-1 mb-4">
               هذا الإجراء لا يمكن التراجع عنه. سيتم حذف جميع إعلاناتك وبياناتك من الخوادم.
             </p>
-            <button className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-bold rounded-lg transition-colors shadow-sm">
+               <button className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-bold rounded-lg transition-colors shadow-sm">
               حذف حسابي
             </button>
           </div>
