@@ -3,6 +3,7 @@ import { UserPlus, UserCheck } from "lucide-react";
 import { useFollow } from "../../Hooks/useFollow";
 import { useAuth } from "../../Hooks/useAuth";
 
+
 const FollowButton = ({ targetUserId, className = "" }) => {
   const { user: currentUser } = useAuth();
   const { toggleFollow, checkFollowStatus } = useFollow();
