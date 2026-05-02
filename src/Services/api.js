@@ -1,5 +1,40 @@
+/*
+ * ==========================================
+ * 🛠 دليل الربط مع الباك إند (Backend Guide)
+ * ==========================================
+ * هذا الملف يحتوي حالياً على بيانات وهمية (Mock Data) ليعمل الواجهة.
+ * عندما تكون جاهزاً للربط مع السيرفر الحقيقي، اتبع الخطوات التالية:
+ * 
+ * 1. أنشئ ملف .env في مجلد المشروع الرئيسي:
+ *    VITE_API_URL=https://api.yourdomain.com
+ * 
+ * 2. استبدل دالة request الحالية بمكتبة axios أو fetch:
+ *    import axios from 'axios';
+ *    const api = axios.create({ baseURL: import.meta.env.VITE_API_URL });
+ * 
+ * 3. قم بتعديل الدوال في الأسفل (مثل loginService) لتستخدم api.post(...) بدلاً من request.
+ * 
+ * ملاحظة: أسماء الدوال (loginService, getListingsService, etc.) صحيحة وجاهزة للاستخدام،
+ * لن تحتاج لتغيير أي كود في صفحات الـ UI (Components/Pages).
+ * ==========================================
+ */
+
+// متغيرات البيئة (إذا وجدت)
+const API_URL = import.meta.env.VITE_API_URL || ""; 
+
 let MOCK_FAVORITES = ["1", "3"];
 let MOCK_BOOKMARKS = ["2"];
+
+let MOCK_FOLLOWS = {
+  following: ["seller_1", "seller_2"],
+  followers: ["seller_3"],
+};
+
+const MOCK_USERS_DB = {
+  seller_1: { id: "seller_1", name: "أحمد محمد", email: "ahmed@email.com", joined: "2024-06-10T10:00:00Z" },
+  seller_2: { id: "seller_2", name: "سارة علي", email: "sara@email.com", joined: "2024-08-15T14:30:00Z" },
+  seller_3: { id: "seller_3", name: "خالد حسن", email: "khaled@email.com", joined: "2024-11-20T09:00:00Z" },
+};
 
 // تعريف المستخدم الحالي (يتم تحميله من التخزين المحلي أو إنشاؤه جديد)
 let MOCK_USER = JSON.parse(localStorage.getItem("mockUser") || "null");
@@ -89,6 +124,11 @@ const request = async (url, options = {}) => {
         user = { id: "current_user", name: body.email.split("@")[0], email: body.email, joined: new Date().toISOString() };
         setCurrentUser(user);
       }
+      // إصلاح: إذا المستخدم موجود بس ما عنده اسم
+      if (!user.name) {
+        user.name = body.email.split("@")[0];
+        setCurrentUser(user);
+      }
       return {
         user: user,
         token: "mock-token-12345",
@@ -106,7 +146,8 @@ const request = async (url, options = {}) => {
 
   if (url.includes("/auth/me")) {
     const user = getCurrentUser();
-    return user || { id: "current_user", name: "زائر", email: "" };
+    const fallbackName = user?.email ? user.email.split("@")[0] : "زائر";
+    return user ? { ...user, name: user.name || fallbackName } : { id: "current_user", name: "زائر", email: "" };
   }
 
   if (url.includes("/favorites")) {
@@ -190,10 +231,55 @@ const request = async (url, options = {}) => {
   if (url.includes("/profile")) {
     const user = getCurrentUser();
     if (!user) throw new Error("يجب تسجيل الدخول");
-    
-    // جلب الإعلانات التي تخص المستخدم الحالي فقط
+    const fallbackName = user.email ? user.email.split("@")[0] : "مستخدم";
+    const profileWithFallback = { ...user, name: user.name || fallbackName };
     const myListings = MOCK_LISTINGS.filter(l => l.userId === user.id);
-    return { profile: user, listings: myListings };
+    return { profile: profileWithFallback, listings: myListings };
+  }
+
+  if (url.includes("/follows")) {
+    const currentUser = getCurrentUser();
+    if (!currentUser) throw new Error("يجب تسجيل الدخول");
+
+    if (url.includes("/follow") && !url.includes("/followers") && !url.includes("/following") && !url.includes("/follows/check")) {
+      const segments = url.split("/").filter(Boolean);
+      const targetId = segments[segments.length - 2];
+      if (targetId === currentUser.id) throw new Error("لا يمكنك متابعة نفسك");
+      if (!MOCK_FOLLOWS.following.includes(targetId)) {
+        MOCK_FOLLOWS.following.push(targetId);
+        if (!MOCK_FOLLOWS.followers.includes(currentUser.id)) {
+          MOCK_FOLLOWS.followers.push(currentUser.id);
+        }
+      }
+      return { action: "followed", targetId, following: [...MOCK_FOLLOWS.following] };
+    }
+
+    if (url.includes("/unfollow")) {
+      const segments = url.split("/").filter(Boolean);
+      const targetId = segments[segments.length - 2];
+      MOCK_FOLLOWS.following = MOCK_FOLLOWS.following.filter((id) => id !== targetId);
+      MOCK_FOLLOWS.followers = MOCK_FOLLOWS.followers.filter((id) => id !== currentUser.id);
+      return { action: "unfollowed", targetId, following: [...MOCK_FOLLOWS.following] };
+    }
+
+    if (url.includes("/following") && !url.includes("/followers")) {
+      return {
+        following: MOCK_FOLLOWS.following.map((id) => MOCK_USERS_DB[id] || { id, name: "مستخدم", email: "" }),
+        count: MOCK_FOLLOWS.following.length,
+      };
+    }
+
+    if (url.includes("/followers")) {
+      return {
+        followers: MOCK_FOLLOWS.followers.map((id) => MOCK_USERS_DB[id] || { id, name: "مستخدم", email: "" }),
+        count: MOCK_FOLLOWS.followers.length,
+      };
+    }
+
+    if (url.match(/\/follows\/check\/[\w]+/)) {
+      const targetId = url.split("/").pop();
+      return { isFollowing: MOCK_FOLLOWS.following.includes(targetId) };
+    }
   }
 
   throw new Error("الصفحة غير موجودة");
@@ -243,3 +329,9 @@ export const updateProfileService = (data) => {
   setCurrentUser(updatedUser);
   return updatedUser;
 };
+
+export const followUserService = (targetId) => request(`/follows/${targetId}/follow`, { method: "POST" });
+export const unfollowUserService = (targetId) => request(`/follows/${targetId}/unfollow`, { method: "POST" });
+export const getFollowingService = () => request("/follows/following");
+export const getFollowersService = () => request("/follows/followers");
+export const checkFollowStatusService = (targetId) => request(`/follows/check/${targetId}`);

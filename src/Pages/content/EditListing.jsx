@@ -93,7 +93,7 @@ const EditListing = () => {
     }
     try {
       await updateListing(id, { ...formData, price: parseFloat(formData.price), images });
-      navigate(`/listing/${id}`);
+      navigate(`/listing/${id}`, { replace: true });
     } catch {
       // Error handled by Redux
     }

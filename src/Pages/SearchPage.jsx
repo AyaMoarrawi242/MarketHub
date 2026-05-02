@@ -111,12 +111,12 @@ const SearchPage = () => {
           <div>
             <label className="block text-sm font-bold text-light-text dark:text-dark-text mb-1">الفئة</label>
             <select
-              className="w-full px-3 py-2 border border-light-border dark:border-dark-border rounded-lg outline-none focus:ring-2 focus:ring-accent-main bg-light-input dark:bg-dark-bg text-light-text dark:text-dark-text"
+              className="w-full px-3 py-2 border border-light-border dark:border-dark-border rounded-lg outline-none focus:ring-2 focus:ring-accent-main bg-light-input dark:bg-dark-input text-light-text dark:text-dark-textInput"
               value={filters.category}
               onChange={(e) => setFilters({ ...filters, category: e.target.value })}
             >
               {CATEGORIES.map((cat) => (
-                <option key={cat} value={cat} className="bg-light-bg dark:bg-dark-bg">{cat}</option>
+                <option key={cat} value={cat} className="bg-light-input dark:bg-dark-input text-light-text dark:text-dark-textInput">{cat}</option>
               ))}
             </select>
           </div>
@@ -127,7 +127,7 @@ const SearchPage = () => {
               <input
                 type="text"
                 placeholder="مثال: دمشق"
-                className="w-full pl-3 pr-9 py-2 border border-light-border dark:border-dark-border rounded-lg outline-none focus:ring-2 focus:ring-accent-main bg-light-input dark:bg-dark-bg text-light-text dark:text-dark-text"
+                className="w-full pl-3 pr-9 py-2 border border-light-border dark:border-dark-border rounded-lg outline-none focus:ring-2 focus:ring-accent-main bg-light-input dark:bg-dark-input text-light-text dark:text-dark-textInput"
                 value={filters.location}
                 onChange={(e) => setFilters({ ...filters, location: e.target.value })}
               />
@@ -140,7 +140,7 @@ const SearchPage = () => {
               <input
                 type="number"
                 placeholder="0"
-                className="w-full pl-3 pr-9 py-2 border border-light-border dark:border-dark-border rounded-lg outline-none focus:ring-2 focus:ring-accent-main bg-light-input dark:bg-dark-bg text-light-text dark:text-dark-text"
+                className="w-full pl-3 pr-9 py-2 border border-light-border dark:border-dark-border rounded-lg outline-none focus:ring-2 focus:ring-accent-main bg-light-input dark:bg-dark-input text-light-text dark:text-dark-textInput"
                 value={filters.minPrice}
                 onChange={(e) => setFilters({ ...filters, minPrice: e.target.value })}
               />
@@ -153,7 +153,7 @@ const SearchPage = () => {
               <input
                 type="number"
                 placeholder="∞"
-                className="w-full pl-3 pr-9 py-2 border border-light-border dark:border-dark-border rounded-lg outline-none focus:ring-2 focus:ring-accent-main bg-light-input dark:bg-dark-bg text-light-text dark:text-dark-text"
+                className="w-full pl-3 pr-9 py-2 border border-light-border dark:border-dark-border rounded-lg outline-none focus:ring-2 focus:ring-accent-main bg-light-input dark:bg-dark-input text-light-text dark:text-dark-textInput"
                 value={filters.maxPrice}
                 onChange={(e) => setFilters({ ...filters, maxPrice: e.target.value })}
               />
@@ -161,13 +161,13 @@ const SearchPage = () => {
           </div>
           <div className="flex items-end gap-2">
             <select
-              className="flex-1 px-3 py-2 border border-light-border dark:border-dark-border rounded-lg outline-none focus:ring-2 focus:ring-accent-main bg-light-input dark:bg-dark-bg text-light-text dark:text-dark-text"
+              className="flex-1 px-3 py-2 border border-light-border dark:border-dark-border rounded-lg outline-none focus:ring-2 focus:ring-accent-main bg-light-input dark:bg-dark-input text-light-text dark:text-dark-textInput"
               value={filters.sort}
               onChange={(e) => setFilters({ ...filters, sort: e.target.value })}
             >
-              <option value="newest" className="bg-light-bg dark:bg-dark-bg">الأحدث</option>
-              <option value="price-low" className="bg-light-bg dark:bg-dark-bg">الأرخص</option>
-              <option value="price-high" className="bg-light-bg dark:bg-dark-bg">الأغلى</option>
+              <option value="newest" className="bg-light-input dark:bg-dark-input text-light-text dark:text-dark-textInput">الأحدث</option>
+              <option value="price-low" className="bg-light-input dark:bg-dark-input text-light-text dark:text-dark-textInput">الأرخص</option>
+              <option value="price-high" className="bg-light-input dark:bg-dark-input text-light-text dark:text-dark-textInput">الأغلى</option>
             </select>
             <button
               type="button"

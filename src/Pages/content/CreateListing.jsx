@@ -75,7 +75,7 @@ const CreateListing = () => {
     }
     try {
       const result = await createListing({ ...formData, price: parseFloat(formData.price), images });
-      navigate(`/listing/${result.id}`);
+      navigate(`/listing/${result.id}`, { replace: true });
     } catch {
       // Error handled by Redux
     }

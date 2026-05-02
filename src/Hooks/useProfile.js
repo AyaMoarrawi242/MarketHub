@@ -46,8 +46,10 @@ export const useProfile = () => {
       dispatch(updateProfileStart());
       const result = await updateProfileService(data);
       dispatch(updateProfileSuccess(result));
+      return { success: true };
     } catch (err) {
       dispatch(updateProfileFailure(err.message));
+      return { success: false, error: err.message };
     }
   };
 

@@ -102,7 +102,7 @@ const CategoriesPage = () => {
               <button
                 key={cat.id}
                 onClick={() => setSelectedCategory(cat.id)}
-                className="bg-light-card dark:bg-dark-card rounded-xl shadow-md p-6 flex flex-col items-center gap-3 hover:shadow-lg transition-shadow border border-light-border dark:border-dark-border hover:border-market-primary/50"
+                className="bg-light-card dark:bg-dark-card rounded-xl shadow-md p-6 flex flex-col items-center gap-3 hover:shadow-lg transition-shadow border border-light-border dark:border-dark-border hover:border-accent-main/50"
               >
                 <div className={`w-16 h-16 ${cat.color} rounded-full flex items-center justify-center`}>
                   <Icon className="w-8 h-8" />
@@ -123,7 +123,7 @@ const CategoriesPage = () => {
               <input
                 type="text"
                 placeholder={`ابحث في ${selectedCatData.name}...`}
-                className="w-full pl-4 pr-10 py-2.5 border border-light-border dark:border-dark-border rounded-lg outline-none focus:ring-2 focus:ring-market-primary focus:border-market-primary bg-light-card dark:bg-dark-card text-light-text dark:text-dark-text"
+                className="w-full pl-4 pr-10 py-2.5 border border-light-border dark:border-dark-border rounded-lg outline-none focus:ring-2 focus:ring-accent-main focus:border-accent-main bg-light-input dark:bg-dark-input text-light-text dark:text-dark-textInput"
                 value={filters.search}
                 onChange={(e) => setFilters({ ...filters, search: e.target.value })}
               />
@@ -141,7 +141,7 @@ const CategoriesPage = () => {
               <div>
                 <label className="block text-sm font-bold text-light-text dark:text-dark-text mb-1">الموقع</label>
                 <select
-                  className="w-full px-3 py-2 border border-light-border dark:border-dark-border rounded-lg outline-none focus:ring-2 focus:ring-market-primary bg-light-input dark:bg-dark-bg text-light-text dark:text-dark-text"
+                  className="w-full px-3 py-2 border border-light-border dark:border-dark-border rounded-lg outline-none focus:ring-2 focus:ring-accent-main bg-light-input dark:bg-dark-input text-light-text dark:text-dark-textInput"
                   value={filters.location}
                   onChange={(e) => setFilters({ ...filters, location: e.target.value })}
                 >
@@ -157,7 +157,7 @@ const CategoriesPage = () => {
                   <input
                     type="number"
                     placeholder="0"
-                    className="w-full pl-3 pr-8 py-2 border border-light-border dark:border-dark-border rounded-lg outline-none focus:ring-2 focus:ring-market-primary bg-light-input dark:bg-dark-bg text-light-text dark:text-dark-text"
+                    className="w-full pl-3 pr-8 py-2 border border-light-border dark:border-dark-border rounded-lg outline-none focus:ring-2 focus:ring-accent-main bg-light-input dark:bg-dark-input text-light-text dark:text-dark-textInput"
                     value={filters.minPrice}
                     onChange={(e) => setFilters({ ...filters, minPrice: e.target.value })}
                   />
@@ -170,7 +170,7 @@ const CategoriesPage = () => {
                   <input
                     type="number"
                     placeholder="∞"
-                    className="w-full pl-3 pr-8 py-2 border border-light-border dark:border-dark-border rounded-lg outline-none focus:ring-2 focus:ring-market-primary bg-light-input dark:bg-dark-bg text-light-text dark:text-dark-text"
+                    className="w-full pl-3 pr-8 py-2 border border-light-border dark:border-dark-border rounded-lg outline-none focus:ring-2 focus:ring-accent-main bg-light-input dark:bg-dark-input text-light-text dark:text-dark-textInput"
                     value={filters.maxPrice}
                     onChange={(e) => setFilters({ ...filters, maxPrice: e.target.value })}
                   />
@@ -179,7 +179,7 @@ const CategoriesPage = () => {
               <div>
                 <label className="block text-sm font-bold text-light-text dark:text-dark-text mb-1">الترتيب</label>
                 <select
-                  className="w-full px-3 py-2 border border-light-border dark:border-dark-border rounded-lg outline-none focus:ring-2 focus:ring-market-primary bg-light-input dark:bg-dark-bg text-light-text dark:text-dark-text"
+                  className="w-full px-3 py-2 border border-light-border dark:border-dark-border rounded-lg outline-none focus:ring-2 focus:ring-accent-main bg-light-input dark:bg-dark-input text-light-text dark:text-dark-textInput"
                   value={filters.sort}
                   onChange={(e) => setFilters({ ...filters, sort: e.target.value })}
                 >
@@ -198,7 +198,7 @@ const CategoriesPage = () => {
 
           {loading ? (
             <div className="flex justify-center items-center min-h-[40vh]">
-              <div className="animate-spin h-8 w-8 border-4 border-market-primary border-t-transparent rounded-full"></div>
+              <div className="animate-spin h-8 w-8 border-4 border-accent-main border-t-transparent rounded-full"></div>
             </div>
           ) : filteredListings.length === 0 ? (
             <div className="text-center py-12 bg-light-card dark:bg-dark-card rounded-xl border border-light-border dark:border-dark-border">

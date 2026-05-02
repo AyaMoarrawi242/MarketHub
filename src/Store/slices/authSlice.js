@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  user: null,
+  // قراءة بيانات المستخدم من التخزين المحلي عند تحميل الصفحة لضمان استمرار الجلسة
+  user: JSON.parse(localStorage.getItem("mockUser")) || null,
   token: localStorage.getItem("token") || null,
   isAuthenticated: !!localStorage.getItem("token"),
   loading: false,

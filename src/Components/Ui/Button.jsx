@@ -4,10 +4,10 @@ const Button = ({ children, variant = "primary", size = "md", loading = false, d
   const baseStyles = "inline-flex items-center justify-center font-bold rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-dark-bg";
 
   const variants = {
-    primary: "bg-market-primary text-white hover:bg-blue-700 focus:ring-market-primary shadow-md hover:shadow-lg",
-    secondary: "bg-light-input dark:bg-dark-border text-light-text dark:text-dark-text hover:bg-gray-200 dark:hover:bg-gray-600 focus:ring-gray-400",
-    danger: "bg-market-danger text-white hover:bg-red-700 focus:ring-red-500 shadow-md",
-    ghost: "bg-transparent text-light-muted dark:text-dark-muted hover:bg-gray-100 dark:hover:bg-gray-800 focus:ring-gray-300",
+    primary: "bg-accent-main text-white hover:bg-accent-active focus:ring-accent-main/50 shadow-md hover:shadow-lg",
+    secondary: "bg-light-input dark:bg-dark-input text-light-text dark:text-dark-textInput border border-light-border dark:border-dark-border hover:bg-light-border dark:hover:bg-dark-border focus:ring-accent-main/30",
+    danger: "bg-red-500 text-white hover:bg-red-600 focus:ring-red-500/50 shadow-md",
+    ghost: "bg-transparent text-light-muted dark:text-dark-muted hover:bg-light-input dark:hover:bg-dark-input focus:ring-accent-main/30",
   };
 
   const sizes = {

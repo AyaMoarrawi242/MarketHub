@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { MapPin, Calendar, Tag, Heart, Bookmark } from "lucide-react";
 import { useFavorites } from "../../Hooks/useFavorites";
+import { formatPrice, formatDate } from "../../Utils/format";
 
 const ListingCard = ({ listing }) => {
   const { favorites, bookmarks, toggleFav, toggleBkmk } = useFavorites();
@@ -36,9 +37,9 @@ const ListingCard = ({ listing }) => {
         
         <button
           onClick={(e) => { e.preventDefault(); toggleBkmk(listing.id); }}
-          className="absolute bottom-2 right-2 p-2 bg-white/90 dark:bg-dark-bg/90 backdrop-blur-sm rounded-full shadow-sm hover:bg-blue-50 dark:hover:bg-blue-900/50 transition-colors"
+          className="absolute bottom-2 right-2 p-2 bg-white/90 dark:bg-dark-bg/90 backdrop-blur-sm rounded-full shadow-sm hover:bg-green-50 dark:hover:bg-green-900/50 transition-colors"
         >
-          <Bookmark className={`w-5 h-5 transition-colors ${isBookmarked ? "fill-market-primary text-market-primary" : "text-gray-500 dark:text-gray-400 hover:text-market-primary"}`} />
+          <Bookmark className={`w-5 h-5 transition-colors ${isBookmarked ? "fill-accent-main text-accent-main" : "text-gray-500 dark:text-gray-400 hover:text-accent-main"}`} />
         </button>
       </div>
 
@@ -47,7 +48,7 @@ const ListingCard = ({ listing }) => {
           <div className="flex justify-between items-start mb-2">
             <h3 className="font-bold text-base text-light-text dark:text-dark-text truncate pr-2">{listing.title}</h3>
             {listing.category && (
-              <span className="bg-blue-50 dark:bg-blue-900/30 text-market-primary px-2 py-0.5 rounded text-[10px] font-bold whitespace-nowrap">
+              <span className="bg-blue-50 dark:bg-blue-900/30 text-accent-main px-2 py-0.5 rounded text-[10px] font-bold whitespace-nowrap">
                 {listing.category}
               </span>
             )}
@@ -62,13 +63,13 @@ const ListingCard = ({ listing }) => {
             </div>
             <div className="flex items-center gap-1">
               <Calendar className="w-3.5 h-3.5" />
-              <span>{new Date(listing.createdAt).toLocaleDateString("ar-EG")}</span>
+              <span>{formatDate(listing.createdAt)}</span>
             </div>
           </div>
 
           <div className="mt-4 pt-3 border-t border-light-border dark:border-dark-border flex items-center justify-between">
-            <span className="font-extrabold text-market-primary text-lg">
-              {listing.price ? `${listing.price.toLocaleString()} ل.س` : "مجاني"}
+            <span className="font-extrabold text-accent-main text-lg">
+              {formatPrice(listing.price)}
             </span>
             {listing.status === "sold" && (
               <span className="bg-red-50 dark:bg-red-900/20 text-red-600 px-2 py-0.5 rounded text-xs font-bold">

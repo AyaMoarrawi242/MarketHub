@@ -2,7 +2,7 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import { PlusCircleIcon } from '@heroicons/react/24/solid';
 import { Search, Heart, Menu, MessageCircle, PlusCircle, Sun, Moon, Home, User, Grid, BookmarkIcon } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../Hooks/useAuth';
 import BazarHalab from "../../assets/BazarHalab5.png";
 
@@ -19,7 +19,7 @@ export const ThemeToggle = () => {
     <button
       onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
       className='p-2 rounded-lg text-light-gray dark:text-dark-gray group transition-colors'>
-      {theme === "dark" ? <Sun size={28} className='group-hover:text-accent-main fill-current' /> : <Moon size={28} className="group-hover:text-accent-main fill-current " />}
+      {theme === "dark" ? <Sun size={28} className='group-hover:text-accent-main fill-current' /> : <Moon size={28} className="group-hover:text-accent-main fill-current" />}
     </button>
   );
 };
@@ -27,6 +27,7 @@ export const ThemeToggle = () => {
 const Header = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
   const { isAuthenticated } = useAuth();
 
   const handleSearch = (e) => {
@@ -35,6 +36,9 @@ const Header = () => {
       navigate(`/search?search=${encodeURIComponent(searchQuery)}`);
     }
   };
+
+  // دالة مساعدة لمعرفة إذا كان الرابط نشطاً
+  const isActive = (path) => location.pathname === path;
 
   return (
     <header className="w-full 
@@ -70,47 +74,47 @@ const Header = () => {
 
           <Link
             to="/bookmarks"
-            className="hover:text-accent-main transition-colors duration-300"
+            className={`transition-colors duration-300 ${isActive('/bookmarks') ? 'text-accent-main' : 'hover:text-accent-main'}`}
           >
-            <BookmarkIcon size={30} className='fill-current stroke-0' />
+            <BookmarkIcon size={30} className={`fill-current stroke-0 ${isActive('/bookmarks') ? 'text-accent-main' : ''}`} />
           </Link>
 
           <Link
             to="/favorites"
-            className="hover:text-accent-main transition-colors duration-300"
+            className={`transition-colors duration-300 ${isActive('/favorites') ? 'text-accent-main' : 'hover:text-accent-main'}`}
           >
-            <Heart size={30} className='fill-current stroke-0' />
+            <Heart size={30} className={`fill-current stroke-0 ${isActive('/favorites') ? 'text-accent-main' : ''}`} />
           </Link>
 
           <Link
             to="/message"
-            className="hover:text-accent-main transition-colors duration-300"
+            className={`transition-colors duration-300 ${isActive('/message') ? 'text-accent-main' : 'hover:text-accent-main'}`}
           >
-            <MessageCircle size={30} className='fill-current stroke-0' />
+            <MessageCircle size={30} className={`fill-current stroke-0 ${isActive('/message') ? 'text-accent-main' : ''}`} />
           </Link>
 
           {/* Profile */}
           <Link
             to="/profile"
-            className="flex items-center gap-2 text-gray-700 dark:text-gray-200 transition group"
+            className={`transition-colors duration-300 ${isActive('/profile') ? 'text-accent-main' : 'hover:text-accent-main'}`}
           >
-            <User size={30} className='group-hover:text-accent-main fill-current stroke-0' />
+            <User size={30} className={`fill-current stroke-0 ${isActive('/profile') ? 'text-accent-main' : ''}`} />
           </Link>
 
           {/* Categories */}
           <Link
             to="/categories"
-            className="flex items-center gap-2 text-light-gray dark:text-dark-gray transition group"
+            className={`transition-colors duration-300 ${isActive('/categories') ? 'text-accent-main' : 'hover:text-accent-main'}`}
           >
-            <Grid size={30} className='group-hover:text-accent-main' />
+            <Grid size={30} className={isActive('/categories') ? 'text-accent-main' : ''} />
           </Link>
 
           {/* Home */}
           <Link
             to="/"
-            className="flex items-center gap-2 text-light-gray dark:text-dark-gray transition group"
+            className={`transition-colors duration-300 ${isActive('/') ? 'text-accent-main' : 'hover:text-accent-main'}`}
           >
-            <Home size={30} className='group-hover:text-accent-main fill-current stroke-0' />
+            <Home size={30} className={`fill-current stroke-0 ${isActive('/') ? 'text-accent-main' : ''}`} />
           </Link>
 
         </div>
@@ -122,13 +126,13 @@ const Header = () => {
       >
         <Search
           size={20}
-          className="text-light-gray dark:text-dark-gray group-hover:text-accent-main transition-colors duration-300"
+          className="text-light-muted dark:text-dark-muted group-hover:text-accent-main transition-colors duration-300"
         />
         <input
           type="text"
           placeholder="...ابحث"
-          className="w-[80%] max-w-[90%] bg-transparent px-[15px] py-[5px] text-md mx-[15px] outline-none text-light-gray 
-          dark:text-dark-gray rounded-lg
+          className="w-[80%] max-w-[90%] bg-transparent px-[15px] py-[5px] text-md mx-[15px] outline-none text-light-text 
+          dark:text-dark-text rounded-lg
           focus:ring-0 
           focus:border-accent-main 
           dark:focus:border-none
@@ -140,20 +144,28 @@ const Header = () => {
       </form>
       {/* icon Mobile */}
       <div className="md:hidden flex items-center w-full
-        text-gray-700 dark:text-gray-200 pl-4 flex-row-reverse gap-14 pr-0">
+        text-light-gray dark:text-dark-gray pl-4 flex-row-reverse gap-14 pr-0">
         <div className='flex items-center gap-6 flex-1'>
           <ThemeToggle />
 
+          {/* إضافة زر البحث للموبايل بدلاً من الشريط الكبير */}
+          <Link
+            to="/search"
+            className="text-light-gray dark:text-dark-gray hover:text-accent-main transition-colors"
+          >
+            <Search size={28} />
+          </Link>
+
           <Link
             to="/favorites"
-            className="text-gray-700 dark:text-gray-200 active:text-[#16a34a]"
+            className={`active:text-accent-main ${isActive('/favorites') ? 'text-accent-main' : ''}`}
           >
             <Heart size={28} className='fill-current stroke-0' />
           </Link>
 
           <Link
             to="/message"
-            className="text-gray-700 dark:text-gray-200 active:text-[#16a34a]"
+            className={`active:text-accent-main ${isActive('/message') ? 'text-accent-main' : ''}`}
           >
             <MessageCircle size={28} className='fill-current stroke-0' />
           </Link>
@@ -182,25 +194,6 @@ const Header = () => {
         </div>
       </div>
 
-      {/* SEARCH BAR MOBILE */}
-      <form onSubmit={handleSearch} className="lg:hidden px-4 pb-2 my-1 ">
-        <div className='flex items-center bg-transparent rounded-full px-4 py-1.5'>
-          <Search size={25} className="text-dark-gray" />
-          <input
-            type="text"
-            placeholder="...ابحث"
-            className="flex-1 bg-transparent text-md mx-[15px] outline-none 
-            dark:text-dark-gray rounded-lg
-            focus:ring-0 
-            focus:border-accent-main 
-            dark:focus:border-none
-            dark:focus:shadow-[0_0_2px_theme(colors.accent.main)]
-            mr-0 border border-light-border dark:border-dark-border px-4 "
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-        </div>
-      </form>
     </header>
   );
 };

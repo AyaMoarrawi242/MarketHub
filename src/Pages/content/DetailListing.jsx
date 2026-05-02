@@ -1,10 +1,12 @@
 import React, { useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { useListing } from "../../Hooks/useListing";
 import { useAuth } from "../../Hooks/useAuth";
 import Button from "../../Components/Ui/Button";
 import BackButton from "../../Components/Ui/BackButton";
+import FollowButton from "../../Components/Common/FollowButton";
 import { MapPin, Calendar, Tag, User } from "lucide-react";
+import { formatPrice, formatDate } from "../../Utils/format";
 
 const DetailListing = () => {
   const { id } = useParams();
@@ -61,6 +63,12 @@ const DetailListing = () => {
               مميز
             </span>
           )}
+          {/* شارة "إعلانك" تظهر فقط للمالك */}
+          {isOwner && (
+            <span className="absolute top-4 left-4 bg-blue-600 text-white text-sm font-bold px-3 py-1 rounded-full shadow-sm">
+              إعلانك
+            </span>
+          )}
         </div>
 
         <div className="p-6">
@@ -88,7 +96,7 @@ const DetailListing = () => {
             </div>
             <div className="flex items-center gap-1">
               <Calendar className="w-4 h-4" />
-              <span>{new Date(currentListing.createdAt).toLocaleDateString("ar-EG")}</span>
+              <span>{formatDate(currentListing.createdAt)}</span>
             </div>
             {currentListing.category && (
               <div className="flex items-center gap-1">
@@ -107,7 +115,7 @@ const DetailListing = () => {
 
           <div className="mt-6 pt-6 border-t border-light-border dark:border-dark-border">
             <span className="text-3xl font-extrabold text-accent-main">
-              {currentListing.price ? `${currentListing.price.toLocaleString()} ل.س` : "مجاني"}
+              {formatPrice(currentListing.price)}
             </span>
           </div>
 
@@ -128,12 +136,15 @@ const DetailListing = () => {
           )}
 
           {currentListing.seller && (
-            <div className="mt-6 pt-6 border-t border-light-border dark:border-dark-border flex items-center gap-3 bg-light-input dark:bg-dark-bg p-4 rounded-lg">
-              <User className="w-8 h-8 text-light-muted dark:text-dark-muted" />
-              <div>
-                <p className="font-bold text-light-text dark:text-dark-text">{currentListing.seller.name}</p>
-                <p className="text-sm text-light-muted dark:text-dark-muted">{currentListing.seller.email}</p>
-              </div>
+            <div className="mt-6 pt-6 border-t border-light-border dark:border-dark-border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-light-input dark:bg-dark-bg p-4 rounded-lg">
+              <Link to={`/user/${currentListing.userId}`} className="flex items-center gap-3 hover:opacity-80 transition-opacity">
+                <User className="w-8 h-8 text-light-muted dark:text-dark-muted" />
+                <div>
+                  <p className="font-bold text-light-text dark:text-dark-text">{currentListing.seller.name}</p>
+                  <p className="text-sm text-light-muted dark:text-dark-muted">{currentListing.seller.email}</p>
+                </div>
+              </Link>
+              <FollowButton targetUserId={currentListing.userId} />
             </div>
           )}
         </div>

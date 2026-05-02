@@ -1,19 +1,24 @@
 import React, { useEffect, useState } from "react";
-import { User, Mail, Calendar, Edit2, Save, X } from "lucide-react";
+import { Link } from "react-router-dom";
+import { User, Mail, Calendar, Edit2, Save, X, Users } from "lucide-react";
 import { useProfile } from "../../Hooks/useProfile";
 import { useAuth } from "../../Hooks/useAuth";
+import { useFollow } from "../../Hooks/useFollow";
 import ListingCard from "../../Components/Content/ListingCard";
 import Button from "../../Components/Ui/Button";
 import Input from "../../Components/Ui/Input";
+import { formatDate } from "../../Utils/format";
 
 const ProfilePage = () => {
   const { logout } = useAuth();
   const { profile, myListings, loading, fetchMyProfile, updateProfile } = useProfile();
+  const { followersCount, followingCount, fetchFollows } = useFollow();
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({ name: "" });
 
   useEffect(() => {
     fetchMyProfile();
+    fetchFollows();
   }, []);
 
   useEffect(() => {
@@ -23,8 +28,16 @@ const ProfilePage = () => {
   }, [profile]);
 
   const handleSave = async () => {
-    await updateProfile(formData);
-    setIsEditing(false);
+    if (!formData.name.trim()) {
+      alert("الاسم لا يمكن أن يكون فارغاً");
+      return;
+    }
+    const res = await updateProfile(formData);
+    if (res.success) {
+      setIsEditing(false);
+    } else {
+      alert(res.error || "فشل حفظ التعديلات");
+    }
   };
 
   if (loading && !profile) {
@@ -41,7 +54,7 @@ const ProfilePage = () => {
         <div className="bg-accent-main h-32 sm:h-48 relative">
           <div className="absolute -bottom-12 right-6 sm:right-10">
             <div className="w-24 h-24 sm:w-32 sm:h-32 bg-light-input dark:bg-dark-bg rounded-full border-4 border-light-card dark:border-dark-card flex items-center justify-center shadow-md">
-              <User className="w-10 h-10 sm:w-16 sm:h-16 text-light-muted dark:text-dark-muted" />
+              <User className="w-10 h-10 sm:w-16 sm:h-16 text-gray-500 dark:text-gray-400" />
             </div>
           </div>
         </div>
@@ -64,7 +77,7 @@ const ProfilePage = () => {
                 </div>
               ) : (
                 <div className="flex items-center gap-3">
-                  <h1 className="text-2xl sm:text-3xl font-bold text-light-text dark:text-dark-text">{profile?.name}</h1>
+                  <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-100">{profile?.name || "اسم المستخدم"}</h1>
                   <button onClick={() => setIsEditing(true)} className="text-light-muted dark:text-dark-muted hover:text-accent-main transition-colors">
                     <Edit2 className="w-5 h-5" />
                   </button>
@@ -74,13 +87,26 @@ const ProfilePage = () => {
                 <Mail className="w-4 h-4" /> {profile?.email}
               </p>
               <p className="text-light-muted/80 dark:text-dark-muted text-sm mt-1 flex items-center gap-2">
-                <Calendar className="w-4 h-4" /> عضو منذ {new Date(profile?.joined).toLocaleDateString("ar-EG")}
+                <Calendar className="w-4 h-4" /> عضو منذ {formatDate(profile?.joined)}
               </p>
             </div>
             <Button variant="danger" size="sm" onClick={logout}>
               تسجيل خروج
             </Button>
           </div>
+
+          <Link to="/profile/follows" className="flex items-center gap-6 mt-6 pt-4 border-t border-light-border dark:border-dark-border hover:opacity-80 transition-opacity">
+            <div className="flex items-center gap-2">
+              <Users className="w-5 h-5 text-light-muted dark:text-dark-muted" />
+              <span className="font-bold text-light-text dark:text-dark-text">{followersCount}</span>
+              <span className="text-light-muted dark:text-dark-muted text-sm">متابعوني</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Users className="w-5 h-5 text-light-muted dark:text-dark-muted" />
+              <span className="font-bold text-light-text dark:text-dark-text">{followingCount}</span>
+              <span className="text-light-muted dark:text-dark-muted text-sm">أنا أتابع</span>
+            </div>
+          </Link>
         </div>
       </div>
 

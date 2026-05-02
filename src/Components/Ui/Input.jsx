@@ -9,7 +9,7 @@ const Input = React.forwardRef(({ label, error, className = "", type = "text", .
         type={type}
         // تم إضافة text-gray-900 لضمان وضوح النص داخل الحقل الأبيض
         className={`w-full px-4 py-3 border-2 rounded-lg outline-none transition-all 
-          bg-white dark:bg-dark-input text-gray-900 dark:text-white font-medium placeholder-gray-400 dark:placeholder-gray-500 shadow-sm
+          bg-light-input dark:bg-dark-input text-gray-900 dark:text-white font-medium placeholder-gray-600 dark:placeholder-gray-400 shadow-sm
           ${
             error 
               ? "border-red-500 focus:border-red-600 focus:ring-2 focus:ring-red-200/50" 

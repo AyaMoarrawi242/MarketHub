@@ -7,7 +7,7 @@ const Textarea = React.forwardRef(({ label, error, className = "", rows = 4, ...
       <textarea
         ref={ref}
         rows={rows}
-        className={`w-full px-4 py-3 border-2 rounded-lg outline-none resize-none transition-all bg-white dark:bg-dark-input text-light-text dark:text-dark-text font-medium shadow-sm
+        className={`w-full px-4 py-3 border-2 rounded-lg outline-none resize-none transition-all bg-light-input dark:bg-dark-input text-gray-900 dark:text-white font-medium shadow-sm
         ${
           error 
             ? "border-red-500 focus:border-red-600 focus:ring-2 focus:ring-red-200/50" 

@@ -6,7 +6,7 @@ const Select = React.forwardRef(({ label, error, options = [], className = "", .
       {label && <label className="text-sm font-bold text-light-text dark:text-dark-text">{label}</label>}
       <select
         ref={ref}
-        className={`w-full px-4 py-3 border-2 rounded-lg outline-none transition-all bg-white dark:bg-dark-input text-light-text dark:text-dark-text font-medium shadow-sm appearance-none
+        className={`w-full px-4 py-3 border-2 rounded-lg outline-none transition-all bg-light-input dark:bg-dark-input text-gray-900 dark:text-white font-medium shadow-sm appearance-none
         ${
           error 
             ? "border-red-500 focus:border-red-600 focus:ring-2 focus:ring-red-200/50" 
